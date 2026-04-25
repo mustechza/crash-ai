@@ -1,26 +1,23 @@
-
-def parse(doc):
+# parser.py
+def parse(item):
     try:
-        d = doc.get("document")
-        if not d:
+        doc = item.get("document")
+        if not doc:
             return None
 
-        f = d.get("fields", {})
+        f = doc["fields"]
 
-        def get(v):
-            if "doubleValue" in v:
-                return float(v["doubleValue"])
-            if "integerValue" in v:
-                return int(v["integerValue"])
-            if "stringValue" in v:
-                return v["stringValue"]
+        def v(x):
+            if "doubleValue" in x:
+                return float(x["doubleValue"])
+            if "integerValue" in x:
+                return int(x["integerValue"])
             return None
 
         return {
-            "id": d["name"].split("/")[-1],
-            "multiplier": get(f.get("multiplier", {})),
-            "timestamp": get(f.get("timestamp", {}))
+            "id": doc["name"].split("/")[-1],
+            "multiplier": v(f.get("multiplier", {})),
+            "timestamp": v(f.get("timestamp", {})),
         }
-
     except:
         return None
