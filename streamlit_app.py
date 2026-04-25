@@ -1,17 +1,21 @@
+# app.py
 import streamlit as st
-import pandas as pd
-from model import predict
-from features import build_features
+import time
+from backend import get_live_data
 
-st.title("🚀 Crash AI Predictor")
+st.set_page_config(page_title="Crash AI", layout="wide")
 
-df = pd.read_csv("crash_dataset.csv")
+st.title("🚀 Crash AI Cloud Predictor")
 
-df = build_features(df)
+placeholder = st.empty()
 
-st.line_chart(df["multiplier"])
+while True:
+    df, signal = get_live_data()
 
-latest = df.iloc[-1]
+    if df is not None:
+        with placeholder.container():
+            st.line_chart(df["multiplier"])
+            st.subheader("Signal")
+            st.write(signal)
 
-st.subheader("Latest Signal")
-st.write(predict(latest))
+    time.sleep(3)
