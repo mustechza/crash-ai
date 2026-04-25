@@ -1,4 +1,4 @@
-
+# model.py
 def predict(row):
     score = 0
 
@@ -11,7 +11,7 @@ def predict(row):
     if row["low_streak"] >= 3:
         score += 2
 
-    if row["ma_5"] > row["ma_10"]:
+    if row["ma5"] > row["ma10"]:
         score += 1
 
     if score >= 5:
